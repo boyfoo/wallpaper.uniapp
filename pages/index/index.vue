@@ -21,32 +21,63 @@
 						asdasdasd
 					</swiper-item>
 				</swiper>
-			</view>   
+			</view>
 			<view class="right">
 				<uni-icons type="right" size="16" color="#333"></uni-icons>
+			</view>
+		</view>
+		<view class="select">
+			<CommonTitle>
+				<template #name>每日推荐</template>
+				<template #custom>
+					<view class="date">
+						<uni-icons type="calendar" size="20" color="#28b389"></uni-icons>
+						<view class="text">
+							<uni-dateformat :date="Date.now()" format="dd"></uni-dateformat>日
+						</view>
+					</view>
+				</template>
+			</CommonTitle>
+			<view class="content">
+				<scroll-view scroll-x>
+					<view class="box" v-for="i in 6">
+						<image src="/common/images/wallpaper/preview_small.webp" mode="aspectFill"></image>
+					</view>
+				</scroll-view>
+			</view>
+		</view>
+		<view class="theme">
+			<CommonTitle>
+				<template #name>专题精选</template>\
+				<template #custom>
+					<navigator class="more" url="">More+</navigator>
+				</template>
+			</CommonTitle>
+			<view class="content">
+				<ThemeItem v-for="i in 8"></ThemeItem>
+				<ThemeItem :isMore="true"></ThemeItem>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script setup>
-const banners = [
-	{
-		path: "/common/images/wallpaper/banner1.jpg"
-	},
-	{
-		path: "/common/images/wallpaper/banner2.jpg"
-	},
-	{
-		path: "/common/images/wallpaper/banner3.jpg"
-	}
-]
+	const banners = [{
+			path: "/common/images/wallpaper/banner1.jpg"
+		},
+		{
+			path: "/common/images/wallpaper/banner2.jpg"
+		},
+		{
+			path: "/common/images/wallpaper/banner3.jpg"
+		}
+	]
 </script>
 
 <style lang="scss" scoped>
-	
+
 	.banner {
-		
+
 		width: 750rpx;
 		padding: 30rpx 0;
 
@@ -71,7 +102,7 @@ const banners = [
 		}
 
 	}
-	
+
 	.notice {
 		width: 690rpx;
 		height: 80rpx;
@@ -80,21 +111,26 @@ const banners = [
 		border-radius: 80rpx;
 		display: flex;
 		align-items: center;
+
 		.left {
 			width: 140rpx;
 			display: flex;
 			justify-content: center;
+
 			.text {
 				color: #28b389;
 				font-weight: 600;
 				font-size: 28rpx;
 			}
 		}
+
 		.center {
 			height: 100%;
 			flex: 1;
+
 			swiper {
 				height: 100%;
+
 				swiper-item {
 					// display: flex;
 					// align-items: center;// 用这个文字超多时候没有...效果
@@ -107,15 +143,76 @@ const banners = [
 					text-overflow: ellipsis;
 				}
 			}
+
 			// height: 80rpx;
 			// overflow: hidden;
 			// display: flex;
 		}
-		
+
 		.right {
 			width: 70rpx;
 			display: flex;
 			justify-content: center;
+		}
+	}
+
+	.select {
+		.date {
+			display: flex;
+			color: #28b389;
+			align-items: center;
+
+			.text {
+				margin-left: 5rpx;
+			}
+		}
+
+		padding-top: 50rpx;
+
+		.content {
+			// width: 720rpx;
+			margin-left: 30rpx;
+			margin-top: 30rpx;
+
+			scroll-view {
+				white-space: nowrap;
+
+				.box {
+					width: 200rpx;
+					height: 430rpx;
+					display: inline-block;
+					margin-right: 20rpx;
+
+					image {
+						width: 100%;
+						height: 100%;
+						border-radius: 10rpx;
+					}
+				}
+
+				.box:last-child {
+					margin-right: 30rpx;
+				}
+			}
+		}
+
+	}
+
+	.theme {
+		padding: 50rpx 0;
+
+		.more {
+			color: #888;
+			font-size: 32rpx;
+
+		}
+
+		.content {
+			margin-top: 30rpx;
+			padding: 0 30rpx;
+			display: grid;
+			gap: 15rpx;
+			grid-template-columns: repeat(3, 1fr);
 		}
 	}
 </style>
