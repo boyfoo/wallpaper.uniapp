@@ -41,7 +41,7 @@
 			<view class="content">
 				<scroll-view scroll-x>
 					<view class="box" v-for="i in 6">
-						<image src="/common/images/wallpaper/preview_small.webp" mode="aspectFill"></image>
+						<image src="/static/images/wallpaper/preview_small.webp" mode="aspectFill"></image>
 					</view>
 				</scroll-view>
 			</view>
@@ -63,13 +63,13 @@
 
 <script setup>
 	const banners = [{
-			path: "/common/images/wallpaper/banner1.jpg"
+			path: "/static/images/wallpaper/banner1.jpg"
 		},
 		{
-			path: "/common/images/wallpaper/banner2.jpg"
+			path: "/static/images/wallpaper/banner2.jpg"
 		},
 		{
-			path: "/common/images/wallpaper/banner3.jpg"
+			path: "/static/images/wallpaper/banner3.jpg"
 		}
 	]
 </script>
