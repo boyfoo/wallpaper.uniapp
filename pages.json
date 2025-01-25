@@ -3,16 +3,32 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "我是首页"
+				"navigationBarTitleText": "我是首页",
+				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path" : "pages/classify/classify"
+			"path" : "pages/classify/classify",
+			"style": {
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
 	
 		},
 		{
-			"path" : "pages/user/user"
+			"path" : "pages/user/user",
+			"style": {
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
 	
+		},
+		{
+			"path" : "pages/classlist/classlist",
+			"style" : 
+			{
+				"navigationBarTitleText" : "分类列表"
+			}
 		}
 	],
 	"globalStyle": {
