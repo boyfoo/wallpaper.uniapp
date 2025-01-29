@@ -16,7 +16,7 @@
 				<uni-dateformat :date="new Date()" format="MM月dd日"></uni-dateformat>
 			</view>
 			<view class="footer">
-				<view class="box">
+				<view class="box" @click="clickInfo">
 					<uni-icons type="info" size="28"></uni-icons>
 					<view class="text">信息</view>
 				</view>
@@ -30,6 +30,52 @@
 				</view>
 			</view>
 		</view>
+		<uni-popup ref="infoPopup" type="bottom">
+			<view class="infoPopup">
+				<view class="popHeader">
+					<view></view>
+					<view class="title">壁纸信息</view>
+					<view class="close" @click="clickInfoClose">
+						<uni-icons type="closeempty" size="18" color="#999"></uni-icons>
+					</view>
+				</view>
+				<scroll-view scroll-y>
+					<view class="content">
+						<view class="row">
+							<view class="label">壁纸ID:</view>
+							<text selectable class="value">18387222</text>
+						</view>
+						<view class="row">
+							<view class="label">分类:</view>
+							<view class="value class">明星美女</view>
+						</view>
+						<view class="row">
+							<view class="label">发布者:</view>
+							<view class="value">小郑</view>
+						</view>
+						<view class="row">
+							<view class="label">评分:</view>
+							<view selectable class="value roteBox">
+								<uni-rate readonly touchable value="3.5" size="16"></uni-rate>
+								<text class="score">3.5分</text>
+							</view>
+						</view>
+						<view class="row">
+							<view class="label">摘要:</view>
+							<view class="value">
+								摘要文字内容填充部分，摘要文字内容填充部分，摘要文字内容填充部分
+							</view>
+						</view>
+						<view class="row">
+							<view class="label">标签:</view>
+							<view class="value tabs">
+								<view class="tab" v-for="item in 3">标签名</view>
+							</view>
+						</view>
+					</view>
+				</scroll-view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -39,6 +85,14 @@ import { ref } from 'vue';
 const maskState = ref(true)
 const maskChange = () => {
 	maskState.value = !maskState.value
+}
+const infoPopup = ref(null)
+// 
+const clickInfo = () => {
+	infoPopup.value.open();
+}
+const clickInfoClose = () => {
+	infoPopup.value.close()
 }
 </script>
 
@@ -111,6 +165,7 @@ const maskChange = () => {
 					flex-direction: column;
 					align-items: center;
 					justify-content: center;
+					cursor: pointer;
 					padding: 2rpx 12rpx; // 大一点好点击
 					.text {
 						font-size: 26rpx;
@@ -119,5 +174,74 @@ const maskChange = () => {
 				}
 			}
 		}
-	}
+		.infoPopup {
+			background-color: #fff;
+			padding: 30rpx;
+			border-radius: 30rpx 30rpx 0 0;
+			overflow: hidden;
+			.popHeader {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				.title {
+					color: $text-font-color-2;
+					font-size: 28rpx;
+				}
+				.close {
+					padding: 4rpx;
+					cursor: pointer;
+				}
+			}
+			scroll-view {
+				max-height: 60vh;
+				.content {
+					.row {
+						display: flex;
+						padding: 16rpx 0;
+						font-size: 32rpx;
+						line-height: 1.7em;
+						.label {
+							color: $text-font-color-3;
+							width: 140rpx;
+							text-align: right;
+							font-size: 30rpx;
+						}
+						.value {
+							flex:1;
+							width: 0;
+							
+						}
+						.roteBox {
+							display: flex;
+							align-items: center;
+							.score {
+								padding-left: 10rpx;
+								color: $text-font-color-2;
+								font-size: 28rpx;
+							}
+						}
+						.tabs {
+							display: flex;
+							align-items: center;
+							flex-wrap:wrap;
+							.tab {
+								border: 1px solid $brand-theme-color;
+								color: $brand-theme-color;
+								font-size: 22rpx;
+								padding: 10rpx 30rpx;
+								border-radius: 40rpx;
+								line-height: 1em;
+								margin: 0 5rpx;
+								
+							}
+						}
+						.class {
+							color: $brand-theme-color;
+							
+						}
+					}
+				}
+			}
+		}
+ 	}
 </style>
