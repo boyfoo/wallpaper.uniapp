@@ -18,7 +18,7 @@ export const getLeftIconLeft = () => {
 
 	// #ifdef MP-TOUTIAO
 	let {leftIcon: {left, width}} = tt.getCustomButtonBoundingClientRect();
-	return left + parseInt(width) + 5;
+	return left + parseInt(width);
 	// #endif
 	return 0
 }
