@@ -3,8 +3,8 @@
 		<CustomNavBar title="推荐"></CustomNavBar>
 		<view class="banner">
 			<swiper circular indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
-				<swiper-item v-for="item of banners">
-					<image :src="item.path" mode="aspectFill"></image>
+				<swiper-item v-for="item in bannerList" :key="item._id">
+					<image :src="item.picurl" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -15,12 +15,9 @@
 			</view>
 			<view class="center">
 				<swiper vertical autoplay interval="1500" duration="300" circular>
-					<swiper-item>
-						撒娇手动滑稽卡山东科技啊手机卡打卡机手打户籍卡受打击卡哈刷卡机德哈卡久啊很大
+					<swiper-item v-for="item in noticeList" :key="item._id">{{item.title}}
 					</swiper-item>
-					<swiper-item>
-						asdasdasd
-					</swiper-item>
+
 				</swiper>
 			</view>
 			<view class="right">
@@ -41,8 +38,8 @@
 			</CommonTitle>
 			<view class="content">
 				<scroll-view scroll-x>
-					<view class="box" v-for="i in 6" @click="goPreview">
-						<image src="/static/images/wallpaper/preview_small.webp" mode="aspectFill"></image>
+					<view class="box" v-for="item in randomList" @click="goPreview" :key="item._id">
+						<image :src="item.smallPicurl" mode="aspectFill"></image>
 					</view>
 				</scroll-view>
 			</view>
@@ -63,21 +60,60 @@
 </template>
 
 <script setup>
-	const banners = [{
-			path: "/static/images/wallpaper/banner1.jpg"
-		},
-		{
-			path: "/static/images/wallpaper/banner2.jpg"
-		},
-		{
-			path: "/static/images/wallpaper/banner3.jpg"
-		}
-	]
-	function goPreview(){
+	import { ref } from 'vue'
+	
+	const bannerList = ref([])
+	const randomList = ref([])
+	const noticeList =ref([])
+	const goPreview = () => {
 		uni.navigateTo({
 			url:"/pages/preview/preview"
 		})
 	}
+	const getBanner = async () => {
+		let res = await uni.request({
+			url: "https://tea.qingnian8.com/api/bizhi/homeBanner",
+			header:{
+				"access-key": "525745"
+			}
+		})
+		if (res.data.errCode == 0) {
+			bannerList.value = res.data.data
+		};
+	}
+	
+	const getDayRandom = async () => {
+		let res = await uni.request({
+			url: "https://tea.qingnian8.com/api/bizhi/randomWall",
+			header:{
+				"access-key": "525745"
+			}
+		})
+		if (res.data.errCode == 0) {
+			randomList.value = res.data.data
+		};
+	}
+	
+	const getNotice = async() => {
+		let res = await uni.request({
+			url: "https://tea.qingnian8.com/api/bizhi/wallNewsList",
+			header:{
+				"access-key": "525745"
+			},
+			data: {
+				select: true,
+			}
+		})
+		if (res.data.errCode == 0) {
+			noticeList.value = res.data.data
+		};
+	}
+	
+	getBanner()
+	
+	getDayRandom()
+	
+	getNotice()
 </script>
 
 <style lang="scss" scoped>
