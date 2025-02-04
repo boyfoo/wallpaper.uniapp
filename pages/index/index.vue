@@ -1,6 +1,6 @@
 <template>
 	<view class="homeLayout pageBg">
-		<CustomNavBar></CustomNavBar>
+		<CustomNavBar title="推荐"></CustomNavBar>
 		<view class="banner">
 			<swiper circular indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
 				<swiper-item v-for="item of banners">
@@ -41,7 +41,7 @@
 			</CommonTitle>
 			<view class="content">
 				<scroll-view scroll-x>
-					<view class="box" v-for="i in 6">
+					<view class="box" v-for="i in 6" @click="goPreview">
 						<image src="/static/images/wallpaper/preview_small.webp" mode="aspectFill"></image>
 					</view>
 				</scroll-view>
@@ -73,6 +73,11 @@
 			path: "/static/images/wallpaper/banner3.jpg"
 		}
 	]
+	function goPreview(){
+		uni.navigateTo({
+			url:"/pages/preview/preview"
+		})
+	}
 </script>
 
 <style lang="scss" scoped>

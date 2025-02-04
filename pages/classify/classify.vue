@@ -1,5 +1,6 @@
 <template>
 	<view class="class-layout  pageBg">
+		<CustomNavBar title="分类"></CustomNavBar>
 		<view class=classify>
 			<ThemeItem v-for="item in 15"></ThemeItem>
 		</view>

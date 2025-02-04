@@ -1,7 +1,7 @@
 
 let SYSTEM_INFO = uni.getSystemInfoSync();
 export const getStatusBarHeight = () => {
-	return SYSTEM_INFO.statusBarHeight || 0
+	return SYSTEM_INFO.statusBarHeight || 10
 }
 export const getTitleBarHeight = () => {
 	if (uni.getMenuButtonBoundingClientRect) {

@@ -1,6 +1,6 @@
 <template>
 	<view class="userLayout pageBg">
-		<view class="userInfo">
+		<view class="userInfo" :style="{paddingTop:getStatusBarHeight()+'px'}">
 			<view class="avatar">
 				<image src="/static/images/head/unnamed.jpg" mode="aspectFill"></image>
 			</view>
@@ -59,11 +59,12 @@
 </template>
 
 <script setup>
-	const clickContact = () => {
-		uni.makePhoneCall({
-			phoneNumber: "10086"
-		})
-	}
+import {getStatusBarHeight} from "@/utils/system.js"
+const clickContact = () => {
+	uni.makePhoneCall({
+		phoneNumber: "10086"
+	})
+}
 </script>
 
 <style lang="scss">
