@@ -12,3 +12,6 @@ export function apiGetNotice(data={}) {
 export function apiGetClassify(data={}) {
 	return request({url: "/classify", data})
 }
+export function apiGetClassList(data={}) {
+	return request({url: "/wallList", data})
+}

@@ -1,6 +1,6 @@
 <template>
 	<view class="theme-item">
-		<navigator url="/pages/classlist/classlist" class="box" v-if="!isMore">
+		<navigator :url="`/pages/classlist/classlist?id=${item._id}&name=${item.name}`" class="box" v-if="!isMore">
 			<image class="pic" :src="item.picurl" mode="aspectFill"></image>
 			<view class="mask">{{item.name}}</view>
 			<view class="tab">3天前更新</view>
