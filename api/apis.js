@@ -9,3 +9,6 @@ export function apiGetDayRandom() {
 export function apiGetNotice(data={}) {
 	return request({url: "/wallNewsList", data})
 }
+export function apiGetClassify(data={}) {
+	return request({url: "/classify", data})
+}

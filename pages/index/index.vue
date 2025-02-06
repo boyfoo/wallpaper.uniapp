@@ -52,7 +52,8 @@
 				</template>
 			</CommonTitle>
 			<view class="content">
-				<ThemeItem v-for="i in 8"></ThemeItem>
+				<ThemeItem v-for="item in classifyList" :key="item._id" 
+		:item="item"></ThemeItem>
 				<ThemeItem :isMore="true"></ThemeItem>
 			</view>
 		</view>
@@ -61,11 +62,12 @@
 
 <script setup>
 	import { ref } from 'vue'
-	import {apiGetBanner,apiGetDayRandom,apiGetNotice} from "@/api/apis.js"
+	import {apiGetBanner,apiGetDayRandom,apiGetNotice,apiGetClassify} from "@/api/apis.js"
 	
 	const bannerList = ref([])
 	const randomList = ref([])
 	const noticeList =ref([])
+	const classifyList = ref([])
 	const goPreview = () => {
 		uni.navigateTo({
 			url:"/pages/preview/preview"
@@ -85,12 +87,19 @@
 		let res = await apiGetNotice({select: true})
 		noticeList.value = res.data
 	}
+	const getClassify = async() => {
+		let res = await apiGetClassify({
+			select: true
+		})
+		classifyList.value = res.data
+	}
 	
 	getBanner()
 	
 	getDayRandom()
 	
 	getNotice()
+	getClassify()
 </script>
 
 <style lang="scss" scoped>
