@@ -4,7 +4,8 @@
 			<uni-load-more status="loading"></uni-load-more>
 		</view>
 		<view class="content">
-			<navigator class="item" url="/pages/preview/preview" v-for="item in classList" :key="item._id">
+			<navigator class="item" 
+			:url="`/pages/preview/preview?id=${item._id}`" v-for="item in classList" :key="item._id">
 				<image :src="item.smallPicurl" mode="aspectFill"></image>
 			</navigator>
 		</view>
@@ -28,6 +29,7 @@ const getClassList = async () => {
 		noData.value = true
 	} else {
 		classList.value = [...classList.value,...res.data]
+		uni.setStorageSync("storgClassList", classList.value)
 	}
 }
 

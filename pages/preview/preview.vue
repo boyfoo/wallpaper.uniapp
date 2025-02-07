@@ -1,8 +1,13 @@
 <template>
 	<view class="preview">
-		<swiper circular>
-			<swiper-item v-for="i in 2">
-				<image @click="maskChange" src="/static/images/wallpaper/preview2.jpg" mode="aspectFill"></image>
+		<swiper circular :current="currentIndex" @change="swiperChange">
+			<swiper-item v-for="(item,index) in classList" :key="item._id">
+				<image
+				v-if="currentIndex == index || currentIndex == index+1 || currentIndex == index -1"
+				 @click="maskChange" 
+				 :src="item.picurl" 
+				 mode="aspectFill"
+				 ></image>
 			</swiper-item>
 		</swiper>
 
@@ -10,7 +15,11 @@
 			<view class="goBack" @click="goBack" :style="{top: getStatusBarHeight() + 'px'}">
 				<uni-icons type="back" color="#fff" size="20"></uni-icons>
 			</view>
-			<view class="count">3/9</view>
+			<view class="count">
+				<view class="box">{{currentIndex+1}} </view>
+			/ 
+				<view class="box">{{classList.length}}</view>
+			</view>
 			<view class="time">
 				<uni-dateformat :date="new Date()" format="hh:mm"></uni-dateformat>
 			</view>
@@ -101,6 +110,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import {onLoad} from "@dcloudio/uni-app"
 import {getStatusBarHeight} from "@/utils/system.js"
 const userScore = ref(5)
 const maskState = ref(true)
@@ -109,7 +119,21 @@ const maskChange = () => {
 }
 const infoPopup = ref(null)
 const scorePopup = ref(null)
-// 
+const classList = ref([])
+const currentId = ref(null)
+const currentIndex = ref(0)
+const storgClassList = uni.getStorageSync("storgClassList") || []
+classList.value = storgClassList.map(item => {
+	return {
+		...item,
+		picurl: item.smallPicurl.replace("_small.webp", ".jpg")
+	}
+})
+
+const swiperChange = (e) => {
+	currentIndex.value = e.detail.current;
+}
+
 const clickInfo = () => {
 	infoPopup.value.open();
 }
@@ -125,6 +149,14 @@ const clickScore = () => {
 const goBack = () => {
 	uni.navigateBack()
 }
+
+onLoad((e) => {
+	currentId.value = e.id;
+	currentIndex.value = classList.value.findIndex(item => {
+		return item._id == currentId.value
+	})
+	
+});
 </script>
 
 <style lang="scss" scoped>
@@ -175,8 +207,16 @@ const goBack = () => {
 				background: rgba(0, 0, 0, 0.3);
 				font-size: 28rpx;
 				border-radius: 40rpx;
-				padding: 8rpx 28rpx;
+				padding: 8rpx 16rpx;
 				backdrop-filter: blur(10rpx);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				.box {
+					width: 50rpx;
+					display: flex;
+					justify-content: center;
+				}
 			}
 
 			.time {
