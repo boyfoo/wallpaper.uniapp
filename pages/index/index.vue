@@ -62,6 +62,7 @@
 
 <script setup>
 	import { ref } from 'vue'
+	import {onLoad,onShareAppMessage, onShareTimeline} from "@dcloudio/uni-app"
 	import {apiGetBanner,apiGetDayRandom,apiGetNotice,apiGetClassify} from "@/api/apis.js"
 	
 	const bannerList = ref([])
@@ -100,6 +101,20 @@
 	
 	getNotice()
 	getClassify()
+	
+	onShareAppMessage((e) => {
+		console.log(e);
+		return {
+			"title": "壁纸sss",
+			"path": "/pages/index/index?id=123123"
+		}
+	})
+	onShareTimeline((e) => {
+		console.log(e);
+	})
+	onLoad((e) => {
+		console.log(e);
+	})
 </script>
 
 <style lang="scss" scoped>

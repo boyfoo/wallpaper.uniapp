@@ -33,9 +33,9 @@
 				</view>
 				<view class="box" @click="clickScore">
 					<uni-icons type="star" size="28"></uni-icons>
-					<view class="text">5分</view>
+					<view class="text">{{currnetInfo.score}}分</view>
 				</view>
-				<view class="box">
+				<view class="box" @click="clickDownload">
 					<uni-icons type="download" size="24"></uni-icons>
 					<view class="text">下载</view>
 				</view>
@@ -54,33 +54,31 @@
 					<view class="content">
 						<view class="row">
 							<view class="label">壁纸ID:</view>
-							<text selectable class="value">18387222</text>
+							<text selectable class="value">{{currnetInfo._id}}</text>
 						</view>
-						<view class="row">
+			<!-- 			<view class="row">
 							<view class="label">分类:</view>
 							<view class="value class">明星美女</view>
-						</view>
+						</view> -->
 						<view class="row">
 							<view class="label">发布者:</view>
-							<view class="value">小郑</view>
+							<view class="value">{{currnetInfo.nickname}}</view>
 						</view>
 						<view class="row">
 							<view class="label">评分:</view>
 							<view selectable class="value roteBox">
-								<uni-rate readonly touchable value="3.5" size="16"></uni-rate>
-								<text class="score">3.5分</text>
+								<uni-rate readonly touchable :value="currnetInfo.score" size="16"></uni-rate>
+								<text class="score">{{currnetInfo.score}}</text>
 							</view>
 						</view>
 						<view class="row">
 							<view class="label">摘要:</view>
-							<view class="value">
-								摘要文字内容填充部分，摘要文字内容填充部分，摘要文字内容填充部分
-							</view>
+							<view class="value">{{currnetInfo.description}}</view>
 						</view>
 						<view class="row">
 							<view class="label">标签:</view>
 							<view class="value tabs">
-								<view class="tab" v-for="item in 3">标签名</view>
+								<view class="tab" v-for="item in currnetInfo.tabs">{{item}}</view>
 							</view>
 						</view>
 					</view>
@@ -101,7 +99,7 @@
 					<text class="text">{{userScore}}分</text>
 				</view>
 				<view class="footer">
-					<button type="default" size="mini" plain>确认评分</button>
+					<button @click="submitScore" type="default" size="mini" plain>确认评分</button>
 				</view>
 			</view>
 		</uni-popup>	
@@ -122,6 +120,8 @@ const scorePopup = ref(null)
 const classList = ref([])
 const currentId = ref(null)
 const currentIndex = ref(0)
+const currnetInfo = ref(null)
+
 const storgClassList = uni.getStorageSync("storgClassList") || []
 classList.value = storgClassList.map(item => {
 	return {
@@ -132,6 +132,7 @@ classList.value = storgClassList.map(item => {
 
 const swiperChange = (e) => {
 	currentIndex.value = e.detail.current;
+	currnetInfo.value = classList.value[currentIndex.value]
 }
 
 const clickInfo = () => {
@@ -149,14 +150,78 @@ const clickScore = () => {
 const goBack = () => {
 	uni.navigateBack()
 }
+const submitScore = () => {
+	
+}
+const clickDownload = () => {
+	// #ifdef H5
+		uni.showModal({
+			content:"请长按保存图像"
+		})
+	// #endif
+	
+	// #ifndef H5
+	uni.showLoading({
+		title:"下载中...",
+		mask: true
+	})
+	uni.getImageInfo({
+		src:currnetInfo.value.picurl,
+		success: res => {
+			uni.saveImageToPhotosAlbum({
+				filePath:res.path,
+				success: res => {
+					console.log(res);
+				},
+				fail:err =>{
+					if (err.errMsg != "saveImageToPhotosAlbum:fail auth deny") {
+						uni.showToast({
+							title:"保存失败，请重新下载",
+							icon: "none"
+						})
+						return
+					}
+					uni.showModal({
+						title:"提示",
+						content:"需要授权保存相册",
+						success: res => {
+							if (res.confirm) {
+								uni.openSetting({
+									success: (setting) => {
+										if (setting.authSetting['scope.writePhotosAlbum']) {
+											uni.showToast({
+												title:"获取授权成功",
+												icon: "none"
+											})
+										}
+									}
+								})
+							}
+						}
+					})
+				},
+				complete: () => {
+					uni.hideLoading()
+				}
+			})
+		}
+	})
+	
+	
+	// #endif
+}
 
 onLoad((e) => {
 	currentId.value = e.id;
 	currentIndex.value = classList.value.findIndex(item => {
 		return item._id == currentId.value
 	})
+	currnetInfo.value = classList.value[currentIndex.value]
 	
 });
+onShareAppMessage((e) => {
+	console.log(e);
+})
 </script>
 
 <style lang="scss" scoped>
